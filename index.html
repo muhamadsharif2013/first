@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Munisa ♥</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Petit+Formal+Script&family=Lora:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --rose:    #c8596a;
+      --rose-lt: #e8a0aa;
+      --cream:   #fdf6ef;
+      --ink:     #2a1a1f;
+      --gold:    #c9a96e;
+      --blush:   #f5dde0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #110a0d;
+      color: var(--cream);
+      font-family: 'Lora', serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ─────────────────────────────────── */
+    .cursor {
+      position: fixed; width: 18px; height: 18px;
+      background: var(--rose-lt); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform .15s, background .15s;
+      mix-blend-mode: screen;
+    }
+    .cursor.big { transform: translate(-50%,-50%) scale(2.5); background: var(--rose); }
+
+    /* ── STARFIELD ───────────────────────────────── */
+    #stars {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    }
+    .star {
+      position: absolute; border-radius: 50%;
+      background: #fff; animation: twinkle var(--d) var(--delay) infinite alternate ease-in-out;
+    }
+    @keyframes twinkle { from { opacity: .1; transform: scale(1); } to { opacity: .9; transform: scale(1.4); } }
+
+    /* ── PETALS ──────────────────────────────────── */
+    .petal {
+      position: fixed; top: -60px; pointer-events: none; z-index: 1;
+      font-size: 1.2rem; animation: fall var(--dur) var(--delay) linear infinite;
+      opacity: .7;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-60px) rotate(0deg) translateX(0); opacity: .8; }
+      50%  { transform: translateY(50vh) rotate(180deg) translateX(var(--sway)); opacity: .6; }
+      100% { transform: translateY(110vh) rotate(360deg) translateX(0); opacity: 0; }
+    }
+
+    /* ── SECTIONS ────────────────────────────────── */
+    section { position: relative; z-index: 2; }
+
+    /* ── HERO ────────────────────────────────────── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 2rem;
+      background: radial-gradient(ellipse 80% 70% at 50% 60%, #3a1020 0%, #110a0d 100%);
+    }
+
+    .hero-pre {
+      font-family: 'Petit Formal Script', cursive;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: var(--gold); letter-spacing: .1em;
+      animation: fadeUp 1.2s .3s both;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 10vw, 7.5rem);
+      font-weight: 300; line-height: 1.0;
+      color: var(--cream);
+      animation: fadeUp 1.2s .6s both;
+    }
+    .hero-title em { color: var(--rose-lt); font-style: italic; }
+
+    .hero-sub {
+      margin-top: 1.2rem;
+      font-family: 'Lora', serif; font-size: clamp(.9rem, 2.5vw, 1.15rem);
+      color: #c9a0a8; font-style: italic; letter-spacing: .05em;
+      animation: fadeUp 1.2s .9s both;
+    }
+
+    .scroll-hint {
+      margin-top: 3.5rem; animation: fadeUp 1.2s 1.4s both, bob 2s 2.6s infinite ease-in-out;
+      font-size: .8rem; color: var(--gold); letter-spacing: .2em; text-transform: uppercase;
+    }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── DIVIDER ─────────────────────────────────── */
+    .divider {
+      text-align: center; padding: 2rem 0;
+      color: var(--rose); font-size: 1.4rem; letter-spacing: .4em;
+      animation: fadeUp .8s both;
+    }
+
+    /* ── LETTERS SECTION ─────────────────────────── */
+    #letters {
+      padding: 6rem 1.5rem;
+      background: linear-gradient(180deg, #110a0d 0%, #1e0d14 50%, #110a0d 100%);
+    }
+
+    .section-label {
+      text-align: center; margin-bottom: 3.5rem;
+    }
+    .section-label h2 {
+      font-family: 'Petit Formal Script', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--gold); font-weight: 400;
+    }
+    .section-label p {
+      font-size: .85rem; color: #9a7070; letter-spacing: .15em;
+      text-transform: uppercase; margin-top: .5rem;
+    }
+
+    .letters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 2rem; max-width: 1100px; margin: 0 auto;
+    }
+
+    /* ── ENVELOPE CARD ───────────────────────────── */
+    .env-wrap {
+      perspective: 1200px;
+    }
+
+    .envelope {
+      position: relative; background: transparent;
+      border: none; cursor: pointer;
+      width: 100%; aspect-ratio: 1.618/1;
+    }
+
+    .env-body {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #2e1220 0%, #3f1a26 100%);
+      border-radius: 4px;
+      border: 1px solid #5a2535;
+      box-shadow: 0 8px 40px #00000099, inset 0 0 40px #00000033;
+      position: relative; overflow: hidden;
+      transition: transform .4s, box-shadow .4s;
+    }
+    .envelope:hover .env-body {
+      transform: translateY(-6px) rotateX(2deg);
+      box-shadow: 0 20px 60px #00000099, 0 0 30px #c8596a33;
+    }
+
+    /* wax seal */
+    .wax {
+      position: absolute; bottom: 16%; left: 50%; transform: translateX(-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #e0606a, #8b1a28);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; box-shadow: 0 4px 20px #8b1a2888;
+      transition: transform .3s;
+    }
+    .envelope:hover .wax { transform: translateX(-50%) scale(1.1) rotate(10deg); }
+
+    /* flap */
+    .flap {
+      position: absolute; top: 0; left: 0; width: 100%;
+      height: 50%; clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: linear-gradient(160deg, #4a1e2e, #2e1220);
+      border-bottom: 1px solid #5a2535;
+      transform-origin: top center;
+      transition: transform .6s cubic-bezier(.4,0,.2,1);
+    }
+    .envelope.open .flap { transform: rotateX(-180deg); }
+
+    .env-label {
+      position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%);
+      font-family: 'Lora', serif; font-style: italic;
+      color: var(--gold); font-size: .8rem; letter-spacing: .08em;
+      white-space: nowrap;
+    }
+
+    /* ── LETTER MODAL ────────────────────────────── */
+    .modal-bg {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(10,4,7,.88); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem; opacity: 0; pointer-events: none;
+      transition: opacity .4s;
+    }
+    .modal-bg.show { opacity: 1; pointer-events: all; }
+
+    .letter-paper {
+      background: var(--cream);
+      color: var(--ink);
+      max-width: 560px; width: 100%;
+      border-radius: 3px;
+      padding: clamp(2rem, 6vw, 3.5rem);
+      box-shadow: 0 30px 80px #00000099, 0 0 0 1px #c9a96e44;
+      transform: scale(.9) translateY(20px);
+      transition: transform .4s, opacity .4s;
+      position: relative;
+      max-height: 90vh; overflow-y: auto;
+      /* paper texture */
+      background-image: repeating-linear-gradient(
+        transparent, transparent 27px, #c9a96e22 28px
+      );
+    }
+    .modal-bg.show .letter-paper { transform: scale(1) translateY(0); }
+
+    .letter-date {
+      font-size: .75rem; color: #9a7060; letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .letter-greeting {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-style: italic; color: var(--rose);
+      margin-bottom: 1rem;
+    }
+    .letter-body {
+      font-size: .95rem; line-height: 2;
+      color: #3a2020;
+    }
+    .letter-body p + p { margin-top: 1rem; }
+    .letter-sign {
+      font-family: 'Petit Formal Script', cursive;
+      font-size: 1.7rem; color: var(--rose);
+      margin-top: 2rem; text-align: right;
+    }
+
+    .close-btn {
+      position: absolute; top: 1rem; right: 1.2rem;
+      background: none; border: none; cursor: pointer;
+      font-size: 1.4rem; color: #9a7060;
+      transition: color .2s, transform .2s;
+    }
+    .close-btn:hover { color: var(--rose); transform: rotate(90deg); }
+
+    /* ── REASONS SECTION ─────────────────────────── */
+    #reasons {
+      padding: 6rem 1.5rem;
+      background: #110a0d;
+    }
+
+    .reasons-list {
+      max-width: 680px; margin: 0 auto;
+      list-style: none;
+    }
+    .reasons-list li {
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      padding: 1.4rem 0; border-bottom: 1px solid #2e1520;
+      opacity: 0; transform: translateX(-24px);
+      transition: opacity .6s, transform .6s;
+    }
+    .reasons-list li.visible { opacity: 1; transform: none; }
+
+    .reason-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; font-weight: 300; color: #3a1520;
+      min-width: 2.5rem; line-height: 1;
+    }
+    .reason-text {
+      font-size: 1rem; color: #cbb0b5; line-height: 1.7;
+      font-style: italic;
+    }
+    .reason-text strong { color: var(--rose-lt); font-style: normal; }
+
+    /* ── POEM SECTION ────────────────────────────── */
+    #poem {
+      padding: 7rem 1.5rem;
+      text-align: center;
+      background: radial-gradient(ellipse 80% 70% at 50% 50%, #2a0e1a 0%, #110a0d 100%);
+    }
+
+    .poem-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 3.5vw, 1.55rem);
+      line-height: 2.1; color: #ddc0c5;
+      max-width: 520px; margin: 0 auto;
+      font-style: italic;
+    }
+    .poem-text span {
+      display: block;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .7s, transform .7s;
+    }
+    .poem-text span.visible { opacity: 1; transform: none; }
+    .poem-text .rose-word { color: var(--rose-lt); }
+
+    /* ── FINAL SECTION ───────────────────────────── */
+    #finale {
+      min-height: 60vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 6rem 1.5rem; text-align: center;
+      background: linear-gradient(180deg, #110a0d 0%, #1e0812 100%);
+    }
+    .finale-title {
+      font-family: 'Petit Formal Script', cursive;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      color: var(--gold); margin-bottom: 1.5rem;
+      animation: pulse 3s infinite ease-in-out;
+    }
+    @keyframes pulse { 0%,100% { text-shadow: 0 0 20px #c9a96e55; } 50% { text-shadow: 0 0 50px #c9a96e99; } }
+
+    .hearts-burst {
+      font-size: 2rem; letter-spacing: .3em;
+      animation: fadeUp 1s 1s both;
+    }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      text-align: center; padding: 2rem;
+      font-size: .7rem; color: #4a2530; letter-spacing: .1em;
+    }
+
+    /* ── SCROLL ANIMATIONS ───────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .8s, transform .8s;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <!-- cursor -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- stars -->
+  <div id="stars"></div>
+
+  <!-- ======== HERO ======== -->
+  <section id="hero">
+   
+    <h1 class="hero-title"><em>Munisa</em><br>ты моя вселенная</h1>
+    <p class="hero-sub">каждый день с тобой — лучший день в моей жизни</p>
+    <div class="scroll-hint">↓ &nbsp; читай дальше &nbsp; ↓</div>
+  </section>
+
+  <!-- ======== LETTERS ======== -->
+  <section id="letters">
+    <div class="section-label reveal">
+      <h2>Письма для тебя</h2>
+      <p>нажми на конверт, чтобы открыть</p>
+    </div>
+
+    <div class="letters-grid">
+
+      <!-- letter 1 -->
+      <div class="env-wrap reveal">
+        <button class="envelope" onclick="openLetter(0)" aria-label="Открыть письмо 1">
+          <div class="env-body">
+            <div class="flap"></div>
+            <div class="wax">♥</div>
+            <div class="env-label">Утреннее письмо</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- letter 2 -->
+      <div class="env-wrap reveal" style="transition-delay:.15s">
+        <button class="envelope" onclick="openLetter(1)" aria-label="Открыть письмо 2">
+          <div class="env-body">
+            <div class="flap"></div>
+            <div class="wax">✦</div>
+            <div class="env-label">Ночное письмо</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- letter 3 -->
+      <div class="env-wrap reveal" style="transition-delay:.3s">
+        <button class="envelope" onclick="openLetter(2)" aria-label="Открыть письмо 3">
+          <div class="env-body">
+            <div class="flap"></div>
+            <div class="wax">❋</div>
+            <div class="env-label">Просто так</div>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======== REASONS ======== -->
+  <section id="reasons">
+    <div class="section-label reveal">
+      <h2>Почему именно ты</h2>
+      <p>причин бесконечно, но вот самые главные</p>
+    </div>
+
+    <ul class="reasons-list" id="reasonsList">
+      <li><span class="reason-num">01</span><span class="reason-text">Потому что когда ты <strong>смеёшься</strong> — мир становится немного лучше, и я хочу смешить тебя каждый день.</span></li>
+      <li><span class="reason-num">02</span><span class="reason-text">Потому что даже в <strong>молчании</strong> рядом с тобой мне не бывает пусто.</span></li>
+      <li><span class="reason-num">03</span><span class="reason-text">Потому что ты <strong>замечаешь мелочи</strong>, которые другие просто не видят — и это сводит меня с ума.</span></li>
+      <li><span class="reason-num">04</span><span class="reason-text">Потому что твои <strong>глаза</strong> говорят больше, чем любые слова.</span></li>
+      <li><span class="reason-num">05</span><span class="reason-text">Потому что с тобой я хочу быть <strong>лучшей версией себя</strong> — каждый день.</span></li>
+      <li><span class="reason-num">06</span><span class="reason-text">Потому что ты <strong>настоящая</strong> — и именно это самое редкое и ценное в тебе.</span></li>
+    </ul>
+  </section>
+
+  <!-- ======== POEM ======== -->
+  <section id="poem">
+    <div class="section-label reveal">
+      <h2>Стихи для тебя</h2>
+    </div>
+    <div class="poem-text" id="poemBlock">
+      <span>Я не знаю слов красивее твоего имени,</span>
+      <span>не знаю звука нежнее твоего голоса.</span>
+      <span>Ты — тот самый <span class="rose-word">редкий свет,</span></span>
+      <span>что не слепит, но согревает.</span>
+      <span>&nbsp;</span>
+      <span>И пока есть звёзды на небе —</span>
+      <span>а они будут всегда —</span>
+      <span>я буду помнить, как ты смотришь,</span>
+      <span>когда думаешь, что <span class="rose-word">никто не видит.</span></span>
+    </div>
+  </section>
+
+  <!-- ======== FINALE ======== -->
+  <section id="finale">
+   
+    <p class="hearts-burst">🌸 🌹 💌 🌹 🌸</p>
+  </section>
+
+  <footer>я люблю тебя</footer>
+
+  <!-- ======== MODALS ======== -->
+  <div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+    <div class="letter-paper" id="letterPaper">
+      <button class="close-btn" onclick="closeModalBtn()">✕</button>
+      <div class="letter-date" id="lDate"></div>
+      <div class="letter-greeting" id="lGreeting"></div>
+      <div class="letter-body" id="lBody"></div>
+      <div class="letter-sign" id="lSign"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ── CURSOR ── */
+    const cur = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cur.style.left = e.clientX + 'px';
+      cur.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('button, a').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('big'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+    });
+
+    /* ── STARS ── */
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 160; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const sz = Math.random() * 2.5 + .5;
+      s.style.cssText = `
+        width:${sz}px; height:${sz}px;
+        left:${Math.random()*100}%;
+        top:${Math.random()*100}%;
+        --d:${2+Math.random()*4}s;
+        --delay:${Math.random()*5}s;
+      `;
+      starsEl.appendChild(s);
+    }
+
+    /* ── PETALS ── */
+    const petalChars = ['🌸','🌺','🌹','❤️','✦','❋'];
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.textContent = petalChars[Math.floor(Math.random()*petalChars.length)];
+      p.style.cssText = `
+        left:${Math.random()*100}%;
+        --dur:${8+Math.random()*12}s;
+        --delay:${Math.random()*14}s;
+        --sway:${(Math.random()-0.5)*120}px;
+        font-size:${0.8+Math.random()*0.8}rem;
+      `;
+      document.body.appendChild(p);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); }
+      });
+    }, { threshold: .15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reasons-list li').forEach(el => observer.observe(el));
+
+    /* poem lines */
+    const poemLines = document.querySelectorAll('#poemBlock span');
+    const poemObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          poemLines.forEach((line, i) => {
+            setTimeout(() => line.classList.add('visible'), i * 160);
+          });
+          poemObs.disconnect();
+        }
+      });
+    }, { threshold: .2 });
+    poemObs.observe(document.getElementById('poemBlock'));
+
+    /* ── LETTERS DATA ── */
+    // 💡 РЕДАКТИРУЙ ЗДЕСЬ — замени текст на свои слова!
+    const letters = [
+      {
+        date: 'Каждое утро',
+        greeting: 'Доброе утро, моя Munisa…',
+        body: `<p>Знаешь, каждое утро, когда я открываю глаза, первая мысль — о тебе. Не о делах, не о планах — именно о тебе. О том, как ты выглядишь спросонья, о твоей улыбке, которая только-только появляется, ещё сонная и тёплая.</p>
+               <p>Я хочу, чтобы этот день был для тебя лёгким. Чтобы всё получалось, чтобы люди вокруг были добрыми, чтобы кофе был горячим ровно столько, сколько нужно.</p>
+               <p>И знай: где бы ты ни была сегодня — я думаю о тебе.</p>`,
+        sign: 'Твой ♥'
+      },
+      {
+        date: 'Поздней ночью',
+        greeting: 'Когда всё вокруг затихает…',
+        body: `<p>Ночью, когда всё стихает, я думаю о том, как мне повезло. Ты появилась в моей жизни — и всё изменилось. Не резко, не громко — тихо и навсегда.</p>
+               <p>Ты не знаешь, сколько раз я улыбался сам себе, вспоминая что-то твоё — случайную фразу, взгляд, смех. Ты живёшь у меня в голове, и мне там с тобой хорошо.</p>
+               <p>Спи спокойно. Пусть тебе приснится что-то очень хорошее. Ты это заслуживаешь.</p>`,
+        sign: 'С любовью ✦'
+      },
+      {
+        date: 'Просто так, без повода',
+        greeting: 'Привет, Munisa…',
+        body: `<p>Я не жду особого дня, чтобы сказать тебе это. Мне просто хочется, чтобы ты знала: ты особенная. Не потому что это принято говорить — а потому что это правда.</p>
+               <p>В тебе есть что-то, что я не могу объяснить словами. Притяжение. Тепло. Ты умеешь быть рядом — даже когда тебя нет.</p>
+               <p>Спасибо, что ты есть. Спасибо, что ты — это ты.</p>`,
+        sign: 'Всегда твой ❋'
+      }
+    ];
+
+    /* ── MODAL LOGIC ── */
+    function openLetter(idx) {
+      const l = letters[idx];
+      document.getElementById('lDate').textContent = l.date;
+      document.getElementById('lGreeting').textContent = l.greeting;
+      document.getElementById('lBody').innerHTML = l.body;
+      document.getElementById('lSign').textContent = l.sign;
+      document.getElementById('modalBg').classList.add('show');
+      document.body.style.overflow = 'hidden';
+
+      // open envelope flap
+      document.querySelectorAll('.envelope')[idx].classList.add('open');
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById('modalBg')) closeModalBtn();
+    }
+    function closeModalBtn() {
+      document.getElementById('modalBg').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+  </script>
+</body>
+</html>
